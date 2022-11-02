@@ -2,6 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "main": "bootstrap.ts",
   "scripts": {
     "dev": "tsx watch src/bootstrap.ts",
@@ -9,7 +10,7 @@
     "prisma-studio": "npx prisma studio"
   },
   "keywords": [],
-  "author": "",
+  "author": "Breno Felipe de Bairros <brendo.filipe2050@gmail.com>",
   "license": "ISC",
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -25,5 +26,9 @@
     "@fastify/cors": "^8.1.1",
     "@prisma/client": "^4.5.0",
     "fastify": "^4.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felipsbreno/nlw-copa"
   }
 }

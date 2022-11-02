@@ -28,5 +28,9 @@
   "private": true,
   "overrides": {
     "react": "18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felipsbreno/nlw-copa"
   }
 }
