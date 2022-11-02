@@ -20,6 +20,11 @@ async function bootstrap() {
     return { count };
   });
 
+  fastify.post('/pools', async (request, replay) => {
+    const { title } = request.body;
+    return { title };
+  });
+
   fastify.listen({ port: 3333, host: '0.0.0.0' }, () => {
     console.log('Server is running!');
   });
