@@ -2,9 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "bootstrap.ts",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/bootstrap.ts",
+    "migrate": "npx prisma migrate dev",
+    "prisma-studio": "npx prisma studio"
   },
   "keywords": [],
   "author": "",
