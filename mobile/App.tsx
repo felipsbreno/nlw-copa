@@ -9,6 +9,7 @@ import {
 import { Loading } from './src/components/Loading';
 import { SingIn } from './src/screens/SingIn';
 import { THEME } from './src/styles/theme';
+import { AuthContextProvider } from './src/contexts/AuthContext';
 
 export default function App() {
   const [fontLoaded] = useFonts({
@@ -19,13 +20,15 @@ export default function App() {
 
   return (
     <NativeBaseProvider theme={THEME}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="transparent"
-        translucent
-      />
+      <AuthContextProvider>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent
+        />
 
-      {fontLoaded ? <SingIn /> : <Loading />}
+        {fontLoaded ? <SingIn /> : <Loading />}
+      </AuthContextProvider>
     </NativeBaseProvider>
   );
 }
