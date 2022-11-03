@@ -1,34 +1,83 @@
-import { createContext } from 'react';
+import { createContext, ReactNode, useState, useEffect } from 'react';
+import * as Google from 'expo-auth-session/providers/google';
+import * as AuthSessions from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
+
+import { api } from '../services/api';
+
+WebBrowser.maybeCompleteAuthSession();
 
 interface UserProps {
   name: string;
-  avatarUrl?: string;
+  avatarUrl: string;
 }
 
-export interface AuthContextDataProps {
+export interface AuthContexDataProps {
   user: UserProps;
   singIn: () => Promise<void>;
+  isUserLoading: boolean;
 }
 
 interface AuthProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export const AuthContext = createContext({} as AuthContextDataProps);
+export const AuthContext = createContext({} as AuthContexDataProps);
 
-export function AuthContextProvider({ children }: AuthProviderProps) {
+export function AuthContextProvider({ children }) {
+  const [isUserLoading, setIsUserLoading] = useState(false);
+  const [user, setUser] = useState<UserProps>({} as UserProps);
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    clientId:
+      '583837384692-d1nbs2590cvcfln2t58pevk3h6mkmosl.apps.googleusercontent.com',
+    redirectUri: AuthSessions.makeRedirectUri({ useProxy: true }),
+    scopes: ['profile', 'email'],
+  });
+
   async function singIn() {
-    console.log('Vamos logar');
+    try {
+      setIsUserLoading(true);
+      await promptAsync();
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      setIsUserLoading(false);
+    }
   }
+
+  async function singInWithGoogle(access_token: string) {
+    try {
+      setIsUserLoading(true);
+
+      const tokenResponse = await api.post('/users', { access_token });
+      api.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${tokenResponse.data.token}`;
+
+      const userInfoResponse = await api.get('/me');
+      setUser(userInfoResponse.data.user);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      setIsUserLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (response?.type === 'success' && response.authentication?.accessToken) {
+      singInWithGoogle(response.authentication.accessToken);
+    }
+  }, [response]);
 
   return (
     <AuthContext.Provider
       value={{
         singIn,
-        user: {
-          name: 'Diego Fernandes',
-          avatarUrl: 'https://github.com/diego3g.png',
-        },
+        isUserLoading,
+        user,
       }}>
       {children}
     </AuthContext.Provider>
