@@ -7,12 +7,13 @@ import {
 } from '@expo-google-fonts/roboto';
 
 import { Loading } from './src/components/Loading';
-import { SingIn } from './src/screens/SingIn';
+
 import { THEME } from './src/styles/theme';
 import { AuthContextProvider } from './src/contexts/AuthContext';
+import { Routes } from './src/routes';
 
 export default function App() {
-  const [fontLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Roboto_400Regular,
     Roboto_500Medium,
     Roboto_700Bold,
@@ -26,8 +27,7 @@ export default function App() {
           backgroundColor="transparent"
           translucent
         />
-
-        {fontLoaded ? <SingIn /> : <Loading />}
+        {fontsLoaded ? <Routes /> : <Loading />}
       </AuthContextProvider>
     </NativeBaseProvider>
   );
