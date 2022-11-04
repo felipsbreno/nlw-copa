@@ -1,15 +1,12 @@
 import { Center, Text, Icon } from 'native-base';
-import { useAuth } from '../hooks/useAuth';
-import Logo from '../assets/logo.svg';
-import { Button } from '../components/Button';
 import { Fontisto } from '@expo/vector-icons';
+import { useAuth } from '../hooks/useAuth';
 
-// parei aqui https://youtu.be/ruNzOzYZsk4?t=2951
+import { Button } from '../components/Button';
+import Logo from '../assets/logo.svg';
 
-export function SingIn() {
-  const { singIn, user } = useAuth();
-
-  console.log('Data: ', user);
+export function SignIn() {
+  const { singIn, isUserLoading } = useAuth();
 
   return (
     <Center flex={1} bgColor="gray.900" p={7}>
@@ -17,14 +14,18 @@ export function SingIn() {
 
       <Button
         type="SECONDARY"
-        title="Entrar com a conta do Google"
+        title="ENTRAR COM GOOGLE"
         leftIcon={<Icon as={Fontisto} name="google" color="white" size="md" />}
         mt={12}
         onPress={singIn}
+        isLoading={isUserLoading}
+        _loading={{
+          _spinner: { color: 'white' },
+        }}
       />
 
       <Text color="white" textAlign="center" mt={4}>
-        Não utilizamos nenhuma informação além {'\n'}
+        Não utilizamos nenhuma informação além{'\n'}
         do seu e-mail para criação de sua conta.
       </Text>
     </Center>

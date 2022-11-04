@@ -1,59 +1,35 @@
 import Fastify from 'fastify';
-import { z as zObject } from 'zod';
 import cors from '@fastify/cors';
-import ShortUniqueId from 'short-unique-id';
-import { PrismaClient } from '@prisma/client';
+import jwt from '@fastify/jwt';
+
+import { poolRoutes } from './routes/pool';
+import { authRoutes } from './routes/auth';
+import { gameRoutes } from './routes/game';
+import { guessRoutes } from './routes/guess';
+import { userRoutes } from './routes/user';
 
 async function bootstrap() {
-  const prisma = new PrismaClient({
-    log: ['query'],
-  });
-
   const fastify = Fastify({
     logger: true,
   });
 
-  fastify.register(cors, {
+  await fastify.register(cors, {
     origin: true,
   });
 
-  fastify.get('/pools/count', async () => {
-    const count = await prisma.pool.count();
-    return { count };
+  // Em produção isso precisa ser uma viarável de ambiente
+
+  await fastify.register(jwt, {
+    secret: 'nlwcopa',
   });
 
-  fastify.get('/users/count', async () => {
-    const count = await prisma.user.count();
-    return { count };
-  });
+  await fastify.register(poolRoutes);
+  await fastify.register(authRoutes);
+  await fastify.register(gameRoutes);
+  await fastify.register(guessRoutes);
+  await fastify.register(userRoutes);
 
-  fastify.get('/guesses/count', async () => {
-    const count = await prisma.guess.count();
-    return { count };
-  });
-
-  fastify.post('/pools', async (request, replay) => {
-    const createPoolBody = zObject.object({
-      title: zObject.string(),
-    });
-
-    const { title } = createPoolBody.parse(request.body);
-    const generate = new ShortUniqueId({ length: 6 });
-    const code = String(generate()).toUpperCase();
-
-    await prisma.pool.create({
-      data: {
-        title,
-        code,
-      },
-    });
-
-    return replay.status(201).send({ code });
-  });
-
-  fastify.listen({ port: 3333, host: '0.0.0.0' }, () => {
-    console.log('Server is running!');
-  });
+  await fastify.listen({ port: 3333, host: '0.0.0.0' });
 }
 
 bootstrap();
