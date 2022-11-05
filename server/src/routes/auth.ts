@@ -4,15 +4,9 @@ import { prisma } from '../lib/primsa';
 import { authenticate } from '../plugins/autenticate';
 
 export async function authRoutes(fastify: FastifyInstance) {
-  fastify.get(
-    '/me',
-    {
-      onRequest: [authenticate],
-    },
-    async (request) => {
-      return { user: request.user };
-    }
-  );
+  fastify.get('/me', { onRequest: [authenticate] }, async (request) => {
+    return { user: request.user };
+  });
 
   fastify.post('/users', async (request) => {
     const createUserBody = z.object({
@@ -66,7 +60,7 @@ export async function authRoutes(fastify: FastifyInstance) {
       },
       {
         sub: user.id,
-        expiresIn: '7 days',
+        expiresIn: `${process.env.EXPIRES_IN} days`,
       }
     );
 

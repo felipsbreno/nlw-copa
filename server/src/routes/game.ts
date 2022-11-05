@@ -23,7 +23,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
         include: {
           guesses: {
             where: {
-              participant: {
+              partcipant: {
                 userId: request.user.sub,
                 poolId: id,
               },

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
@@ -20,7 +21,7 @@ async function bootstrap() {
   // Em produção isso precisa ser uma viarável de ambiente
 
   await fastify.register(jwt, {
-    secret: 'nlwcopa',
+    secret: String(process.env.APP_SECRET_KEY),
   });
 
   await fastify.register(poolRoutes);
@@ -29,7 +30,9 @@ async function bootstrap() {
   await fastify.register(guessRoutes);
   await fastify.register(userRoutes);
 
-  await fastify.listen({ port: 3333, host: '0.0.0.0' });
+  await fastify.listen({ port: 3333, host: '0.0.0.0' }, () => {
+    console.log('Server is running!');
+  });
 }
 
 bootstrap();
