@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { prisma } from '../lib/primsa';
 import { authenticate } from '../plugins/autenticate';
+import fetch from 'node-fetch';
 
 export async function gameRoutes(fastify: FastifyInstance) {
   fastify.get(

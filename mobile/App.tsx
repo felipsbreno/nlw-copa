@@ -5,6 +5,7 @@ import {
   Roboto_500Medium,
   Roboto_700Bold,
 } from '@expo-google-fonts/roboto';
+import { useKeepAwake } from 'expo-keep-awake';
 
 import { Loading } from './src/components/Loading';
 
@@ -18,6 +19,8 @@ export default function App() {
     Roboto_500Medium,
     Roboto_700Bold,
   });
+
+  useKeepAwake();
 
   return (
     <NativeBaseProvider theme={THEME}>
