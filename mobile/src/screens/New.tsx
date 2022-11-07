@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Heading, Text, VStack, useToast } from 'native-base';
 
-import Logo from '../assets/logo.svg';
-import { Button } from '../components/Button';
+import { api } from '../services/api';
 
+import Logo from '../assets/logo.svg';
+
+import { Button } from '../components/Button';
 import { Header } from '../components/Header';
 import { Input } from '../components/Input';
-
-import { api } from '../services/api';
 
 export function New() {
   const [title, setTitle] = useState('');
@@ -58,13 +58,18 @@ export function New() {
         <Heading
           fontFamily="heading"
           color="white"
-          fontSize="xl"
+          fontSize="lg"
           my={8}
           textAlign="center">
           Crie seu próprio bolão da copa{'\n'}e compartilhe entre amigos!
         </Heading>
 
-        <Input mb={2} placeholder="Qual o nome do seu bolão?" />
+        <Input
+          mb={2}
+          placeholder="Qual o nome do seu bolão?"
+          onChangeText={setTitle}
+          value={title}
+        />
 
         <Button
           title="CRIAR MEU BOLÃO"

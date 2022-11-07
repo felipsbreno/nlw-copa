@@ -48,7 +48,7 @@ export function Details() {
 
   async function handleCodeShare() {
     await Share.share({
-      message: poolDetails.code,
+      message: poolDetails?.code,
     });
   }
 
