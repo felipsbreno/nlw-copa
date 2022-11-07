@@ -16,7 +16,7 @@ export function Guesses({ poolId, code }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [games, setGames] = useState<GameProps[]>([]);
   const [firstTeamPoints, setFirstTeamPoints] = useState('');
-  const [secondTeamPoints, setSecondTeamPoints] = useState('');
+  const [secondyTeamPoints, setSecondTeamPoints] = useState('');
 
   const toast = useToast();
 
@@ -39,7 +39,7 @@ export function Guesses({ poolId, code }: Props) {
 
   async function handleGuessConfirm(gameId: string) {
     try {
-      if (!firstTeamPoints.trim() || !secondTeamPoints.trim()) {
+      if (!firstTeamPoints.trim() || !secondyTeamPoints.trim()) {
         return toast.show({
           title: 'Informe o placar para palpitar',
           placement: 'top',
@@ -49,7 +49,7 @@ export function Guesses({ poolId, code }: Props) {
 
       await api.post(`/pools/${poolId}/games/${gameId}/guesses`, {
         firstTeamPoints: Number(firstTeamPoints),
-        secondTeamPoints: Number(secondTeamPoints),
+        secondyTeamPoints: Number(secondyTeamPoints),
       });
 
       toast.show({
